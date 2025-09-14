@@ -1,0 +1,54 @@
+# Visual Studio
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Build results
+miniMarketSolid/bin/
+miniMarketSolid/obj/
+[Bb]uild/
+[Ll]og/
+[Tt]est[Rr]esult*/
+
+# Archivos de configuración temporales
+*.cache
+*.pdb
+*.mdb
+*.exe
+*.dll
+
+# Archivos generados de NuGet
+*.nuget.g.props
+*.nuget.g.targets
+*.nuget.dgspec.json
+project.assets.json
+project.nuget.cache
+*.nupkg
+*.snupkg
+packages/
+
+# Archivos de static web assets
+*.staticwebassets.*
+ApiEndpoints.json
+
+# Comprimidos generados
+*.gz
+
+# Configuración de compilación temporal
+*.csproj.user
+*.BuildWithSkipAnalyzers
+*.sourcelink.json
+
+# Publicaciones
+PublishProfiles/
+*.publishsettings
+
+# Archivos de IDE varios
+.vscode/
+.idea/
+
+# Ignorar todo lo que no sea código fuente
+!/miniMarketSolid/Domain/
+!/miniMarketSolid/Domain/**/*.cs
