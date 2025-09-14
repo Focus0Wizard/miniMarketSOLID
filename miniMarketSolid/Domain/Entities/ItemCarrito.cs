@@ -17,10 +17,7 @@ public class ItemCarrito
         this.cantidad = cantidad;
     }
 
-    public ItemCarrito()
-    {
-        
-    }
+    public ItemCarrito() { }
     #endregion
     
     #region Propiedades
