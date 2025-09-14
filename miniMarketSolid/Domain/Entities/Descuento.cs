@@ -2,9 +2,6 @@
 {
     public interface Descuento
     {
-        float AplicarDescuento(float montoTotal)
-        {
-            return montoTotal;
-        }
+        decimal AplicarDescuento(decimal montoTotal);
     }
 }
