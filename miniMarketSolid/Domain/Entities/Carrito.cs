@@ -10,8 +10,9 @@ public class Carrito
     private int id;
     private Cliente cliente;
     private List<ItemCarrito> items;
+    private Descuento descuento;
     #endregion
-    
+
     #region Propiedades
     public int Id
     {
@@ -29,15 +30,25 @@ public class Carrito
         get => cliente;
         set => cliente = value ?? throw new ArgumentNullException(nameof(value));
     }
+    public Descuento Descuento
+    {
+        get => descuento;
+        set => descuento = value ?? throw new ArgumentNullException(nameof(value));
+    }
     #endregion
-    
+
     #region Constructor
     public Carrito(Cliente cliente)
     {
         cliente = cliente ?? throw new ArgumentNullException(nameof(cliente));
     }
+    public Carrito(Cliente cliente, Descuento descuento)
+            : this(cliente)
+    {
+        this.descuento = descuento;
+    }
     #endregion
-    
+
     #region Metodos
     public void AgregarProducto(Producto producto, int cantidad)
     {
@@ -65,7 +76,11 @@ public class Carrito
 
     public double CalcularTotal()
     {
-        return Items.Sum(i => i.subtotal);
+        double subtotal = Items.Sum(i => i.subtotal);
+        if (descuento is null) return subtotal;
+
+        decimal conDescuento = descuento.AplicarDescuento((decimal)subtotal);
+        return (double)conDescuento;
     }
     #endregion  
 }
