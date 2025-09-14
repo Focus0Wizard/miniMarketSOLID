@@ -1,3 +1,5 @@
+using System;
+
 namespace miniMarketSolid.Domain.Entities;
 
 public class Producto
@@ -6,13 +8,13 @@ public class Producto
     private int id;
     private string nombre;
     private string descripcion;
-    private decimal precio;
+    private double precio;
     private int stock;
     private string imagenUrl;
     #endregion
     
     #region Constructores
-    public Producto(int id, string nombre, string descripcion, decimal precio, int stock, string imagenUrl)
+    public Producto(int id, string nombre, string descripcion, double precio, int stock, string imagenUrl)
     {
         this.id = id;
         this.nombre = nombre;
@@ -35,7 +37,7 @@ public class Producto
     public string Nombre
     {
         get => nombre;
-        set => nombre = value ?? throw new ArgumentNullException(nameof(value));
+        set => nombre = value;
     }
 
     public string Descripcion
@@ -44,7 +46,7 @@ public class Producto
         set => descripcion = value ?? throw new ArgumentNullException(nameof(value));
     }
 
-    public decimal Precio
+    public double Precio
     {
         get => precio;
         set => precio = value;
@@ -65,7 +67,7 @@ public class Producto
     
     #region Metodos
 
-    public void ActualizarPrecio(decimal nuevoPrecio)
+    public void ActualizarPrecio(double nuevoPrecio)
     {
         if (nuevoPrecio <= 0)
         {

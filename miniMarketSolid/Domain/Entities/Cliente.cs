@@ -1,4 +1,6 @@
-﻿namespace miniMarketSolid.Domain.Entities
+﻿using System;
+
+namespace miniMarketSolid.Domain.Entities
 {
     public class Cliente
     {
@@ -7,6 +9,7 @@
         private string nombre;
         private string email;
         private int telefono;
+        public Carrito carrito;
         #endregion
 
         #region Propiedades
@@ -45,5 +48,16 @@
             this.telefono = telefono;
         }
         #endregion
+        
+        #region Metodos
+
+        public void asignarCarrito()
+        {
+            carrito = carrito ?? throw new ArgumentNullException(nameof(carrito));
+        }
+
+        #endregion
+        
+        
     }
 }
