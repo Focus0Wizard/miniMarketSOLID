@@ -1,12 +1,14 @@
+using System;
+
 namespace miniMarketSolid.Domain.Entities;
 
 public class ItemCarrito
 {
     #region Atributos
     private int id;
-    private Producto producto;
+    public Producto producto;
     private int cantidad;
-    private decimal subtotal => producto.Precio * cantidad;
+    public double subtotal => producto.Precio * cantidad;
     #endregion
     
     #region Constructores
@@ -18,6 +20,11 @@ public class ItemCarrito
     }
 
     public ItemCarrito() { }
+    public ItemCarrito( Producto producto, int cantidad)
+    {
+        this.producto = producto;
+        this.cantidad = cantidad;
+    }
     #endregion
     
     #region Propiedades
