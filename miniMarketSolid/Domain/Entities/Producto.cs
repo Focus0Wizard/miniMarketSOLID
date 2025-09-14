@@ -22,10 +22,7 @@ public class Producto
         this.imagenUrl = imagenUrl;
     }
 
-    public Producto()
-    {
-        
-    }
+    public Producto() { }
     #endregion
     
     #region Propiedades
