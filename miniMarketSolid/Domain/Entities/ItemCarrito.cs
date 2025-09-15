@@ -1,73 +1,69 @@
 using System;
 
-namespace miniMarketSolid.Domain.Entities;
-
-public class ItemCarrito
+namespace miniMarketSolid.Domain.Entities
 {
-    #region Atributos
-    private int id;
-    public Producto producto;
-    private int cantidad;
-    public double subtotal => producto.Precio * cantidad;
-    #endregion
-    
-    #region Constructores
-    public ItemCarrito(int id, Producto producto, int cantidad)
+    public class ItemCarrito
     {
-        this.id = id;
-        this.producto = producto;
-        this.cantidad = cantidad;
-    }
+        #region Atributos
+        private int id;
+        public Producto producto;
+        private int cantidad;
+        #endregion
 
-    public ItemCarrito() { }
-    public ItemCarrito( Producto producto, int cantidad)
-    {
-        this.producto = producto;
-        this.cantidad = cantidad;
-    }
-    #endregion
-    
-    #region Propiedades
-    public int Id
-    {
-        get => id;
-        set => id = value;
-    }
+        #region Propiedades
+        public int Id
+        {
+            get { return id; }
+            set { id = value; }
+        }
+        public Producto Producto
+        {
+            get { return producto; }
+            set { producto = value; }
+        }
+        public int Cantidad
+        {
+            get { return cantidad; }
+            set { cantidad = value; }
+        }
+        public double subtotal
+        {
+            get
+            {
+                double valor = producto.Precio * cantidad;
+                return valor;
+            }
+        }
+        #endregion
 
-    public Producto Producto
-    {
-        get => producto;
-        set => producto = value ?? throw new ArgumentNullException(nameof(value));
+        #region Constructores
+        public ItemCarrito()
+        {
+
+        }
+        public ItemCarrito(Producto producto, int cantidad)
+        {
+            this.producto = producto;
+            this.cantidad = cantidad;
+        }
+        public ItemCarrito(int id, Producto producto, int cantidad)
+        {
+            this.id = id;
+            this.producto = producto;
+            this.cantidad = cantidad;
+        }
+        #endregion
+
+        #region Métodos
+        public void IncrementarCantidad(int nuevaCantidad)
+        {
+            cantidad = cantidad + nuevaCantidad;
+        }
+
+        public void ReducirCantidad(int nuevaCantidad)
+        {
+            cantidad = cantidad - nuevaCantidad;
+        }
+        #endregion
     }
-
-    public int Cantidad
-    {
-        get => cantidad;
-        set => cantidad = value;
-    }
-    #endregion
-    
-    #region Metodos
-    public void IncrementarCantidad(int nuevaCantidad)
-    {
-        if (nuevaCantidad <= 0)
-            throw new ArgumentException("La cantidad debe ser mayor a cero.");
-
-        if (cantidad + nuevaCantidad > Producto.Stock)
-            throw new InvalidOperationException("No hay suficiente stock disponible.");
-
-        Cantidad += nuevaCantidad;
-    }
-    
-    public void ReducirCantidad(int nuevaCantidad)
-    {
-        if (nuevaCantidad <= 0)
-            throw new ArgumentException("La cantidad debe ser mayor a cero.");
-
-        if (nuevaCantidad > cantidad)
-            throw new InvalidOperationException("No puedes reducir mas de lo que hay en el carrito.");
-
-        cantidad -= nuevaCantidad;
-    }
-    #endregion
 }
