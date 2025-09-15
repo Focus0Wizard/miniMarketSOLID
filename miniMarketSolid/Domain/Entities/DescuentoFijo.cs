@@ -6,8 +6,6 @@
 
         public DescuentoFijo(decimal montoFijo)
         {
-            if (montoFijo < 0m)
-                throw new ArgumentOutOfRangeException(nameof(montoFijo), "Debe ser mayor o igual a 0");
             this.montoFijo = montoFijo;
         }
 
