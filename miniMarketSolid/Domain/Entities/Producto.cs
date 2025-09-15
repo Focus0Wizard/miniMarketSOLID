@@ -1,103 +1,80 @@
-namespace miniMarketSolid.Domain.Entities;
+using System;
 
-public class Producto
+namespace miniMarketSolid.Domain.Entities
 {
-    #region Atributos
-    private int id;
-    private string nombre;
-    private string descripcion;
-    private decimal precio;
-    private int stock;
-    private string imagenUrl;
-    #endregion
-    
-    #region Constructores
-    public Producto(int id, string nombre, string descripcion, decimal precio, int stock, string imagenUrl)
+    public class Producto
     {
-        this.id = id;
-        this.nombre = nombre;
-        this.descripcion = descripcion;
-        this.precio = precio;
-        this.stock = stock;
-        this.imagenUrl = imagenUrl;
-    }
+        #region Atributos
+        private int id;
+        private string nombre;
+        private string descripcion;
+        private double precio;
+        private int stock;
+        private string imagenUrl;
+        #endregion
 
-    public Producto() { }
-    #endregion
-    
-    #region Propiedades
-    public int Id
-    {
-        get => id;
-        set => id = value;
-    }
-
-    public string Nombre
-    {
-        get => nombre;
-        set => nombre = value ?? throw new ArgumentNullException(nameof(value));
-    }
-
-    public string Descripcion
-    {
-        get => descripcion;
-        set => descripcion = value ?? throw new ArgumentNullException(nameof(value));
-    }
-
-    public decimal Precio
-    {
-        get => precio;
-        set => precio = value;
-    }
-
-    public int Stock
-    {
-        get => stock;
-        set => stock = value;
-    }
-
-    public string ImagenUrl
-    {
-        get => imagenUrl;
-        set => imagenUrl = value ?? throw new ArgumentNullException(nameof(value));
-    }
-    #endregion
-    
-    #region Metodos
-
-    public void ActualizarPrecio(decimal nuevoPrecio)
-    {
-        if (nuevoPrecio <= 0)
+        #region Propiedades
+        public int Id
         {
-            throw new ArgumentException("El precio debe de ser mayor a cero");
+            get { return id; }
+            set { id = value; }
         }
-        precio = nuevoPrecio;
-    }
-
-    public void ReducirStock(int cantidad)
-    {
-        if (cantidad <= 0)
+        public string Nombre
         {
-            throw new ArgumentException("La cantidad debe de ser mayor a cero");
+            get { return nombre; }
+            set { nombre = value; }
         }
-
-        if (cantidad > stock)
+        public string Descripcion
         {
-            throw new InvalidOperationException("No hay suficiente stock disponibles");
+            get { return descripcion; }
+            set { descripcion = value; }
         }
-
-        stock -= cantidad;
-    }
-    
-    public void AumentarStock(int cantidad)
-    {
-        if (cantidad <= 0)
+        public double Precio
         {
-            throw new ArgumentException("La cantidad debe de ser mayor a cero");
+            get { return precio; }
+            set { precio = value; }
         }
+        public int Stock
+        {
+            get { return stock; }
+            set { stock = value; }
+        }
+        public string ImagenUrl
+        {
+            get { return imagenUrl; }
+            set { imagenUrl = value; }
+        }
+        #endregion
 
-        stock += cantidad;
+        #region Constructores
+        public Producto()
+        {
+
+        }
+        public Producto(int id, string nombre, string descripcion, double precio, int stock, string imagenUrl)
+        {
+            this.id = id;
+            this.nombre = nombre;
+            this.descripcion = descripcion;
+            this.precio = precio;
+            this.stock = stock;
+            this.imagenUrl = imagenUrl;
+        }
+        #endregion
+
+        #region Métodos
+        public void ActualizarPrecio(double nuevoPrecio)
+        {
+            precio = nuevoPrecio;
+        }
+        public void ReducirStock(int cantidad)
+        {
+            stock = stock - cantidad;
+        }
+        public void AumentarStock(int cantidad)
+        {
+            stock = stock + cantidad;
+        }
+        #endregion
     }
-
-    #endregion
 }
