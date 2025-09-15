@@ -54,7 +54,7 @@ namespace miniMarketSolid.Domain.Entities
         }
         #endregion
 
-        #region Métodos
+        #region Metodos
         public void IncrementarCantidad(int nuevaCantidad)
         {
             cantidad = cantidad + nuevaCantidad;
