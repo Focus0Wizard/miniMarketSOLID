@@ -49,7 +49,7 @@ namespace miniMarketSolid.Domain.Entities
         }
         #endregion
 
-        #region M�todos
+        #region Metodos
         public void AgregarProducto(Producto producto, int cantidad)
         {
             ItemCarrito existente = Items.FirstOrDefault(i => i.Producto.Id == producto.Id);
@@ -71,7 +71,7 @@ namespace miniMarketSolid.Domain.Entities
                 Items.Remove(existente);
             }
         }
-      
+
         public double CalcularTotal()
         {
             double subtotal = Items.Sum(i => i.subtotal);
@@ -85,5 +85,5 @@ namespace miniMarketSolid.Domain.Entities
             return (double)totalConDescuento;
         }
         #endregion
-          
+    }
 }
