@@ -2,7 +2,7 @@
 
 namespace miniMarketSolid.Domain.Entities
 {
-    public sealed class DescuentoFijo : Descuento
+    public sealed class DescuentoFijo : IDescuento
     {
         private readonly decimal montoFijo;
 

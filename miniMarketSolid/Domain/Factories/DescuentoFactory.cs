@@ -4,6 +4,6 @@ namespace miniMarketSolid.Domain.Factories
 {
     public abstract class DescuentoFactory
     {
-        public abstract Descuento CrearDescuento();
+        public abstract IDescuento CrearDescuento();
     }
 }

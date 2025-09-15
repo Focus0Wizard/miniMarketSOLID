@@ -6,6 +6,6 @@ namespace miniMarketSolid.Domain.Factories
     {
         private readonly decimal porcentaje;
         public DescuentoPorcentajeFactory(decimal porcentaje) => this.porcentaje = porcentaje;
-        public override Descuento CrearDescuento() => new DescuentoPorcentaje(porcentaje);
+        public override IDescuento CrearDescuento() => new DescuentoPorcentaje(porcentaje);
     }
 }

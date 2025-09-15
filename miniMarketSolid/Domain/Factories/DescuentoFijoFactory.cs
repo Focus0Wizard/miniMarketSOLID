@@ -6,6 +6,6 @@ namespace miniMarketSolid.Domain.Factories
     {
         private readonly decimal montoFijo;
         public DescuentoFijoFactory(decimal montoFijo) => this.montoFijo = montoFijo;
-        public override Descuento CrearDescuento() => new DescuentoFijo(montoFijo);
+        public override IDescuento CrearDescuento() => new DescuentoFijo(montoFijo);
     }
 }
