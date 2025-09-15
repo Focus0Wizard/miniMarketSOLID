@@ -8,12 +8,15 @@ namespace miniMarketSolid.Domain.Entities
 
         public DescuentoPorcentaje(decimal porcentaje)
         {
-            if (porcentaje < 0m || porcentaje > 100m)
-                throw new ArgumentOutOfRangeException(nameof(porcentaje), "Debe ser de 0 a 100");
             this.porcentaje = porcentaje;
         }
 
         public decimal AplicarDescuento(decimal montoTotal)
-            => montoTotal - (montoTotal * (porcentaje / 100m));
+        {
+            decimal factor = porcentaje / 100m;
+            decimal descuentoCalculado = montoTotal * factor;
+            decimal total = montoTotal - descuentoCalculado;
+            return total;
+        }
     }
 }

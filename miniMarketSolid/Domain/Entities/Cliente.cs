@@ -38,7 +38,7 @@ namespace miniMarketSolid.Domain.Entities
         #region Constructores
         public Cliente()
         {
-               
+
         }
         public Cliente(int idCliente, string nombre, string email, int telefono)
         {
@@ -48,16 +48,12 @@ namespace miniMarketSolid.Domain.Entities
             this.telefono = telefono;
         }
         #endregion
-        
-        #region Metodos
 
         public void asignarCarrito(Carrito carritoNuevo)
         {
             carrito = carritoNuevo;
-        }
 
+        }
         #endregion
-        
-        
     }
 }

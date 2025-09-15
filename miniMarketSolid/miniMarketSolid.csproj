@@ -9,6 +9,7 @@
     <ItemGroup>
       <Folder Include="Application\Interfaces\" />
       <Folder Include="Domain\Factories\" />
+      <Folder Include="Application\Services\" />
       <Folder Include="Domain\ValueObjects\" />
       <Folder Include="Infrastructure\Migrations\" />
       <Folder Include="Infrastructure\Persistence\" />
