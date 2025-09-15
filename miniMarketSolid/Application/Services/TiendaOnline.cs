@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using miniMarketSolid.Domain.Entities;
+using miniMarketSolid.Domain.Factories;
 
 namespace miniMarketSolid.Application.Services;
 
@@ -29,6 +30,19 @@ public class TiendaOnline
         }
         productos.Add(producto);
     }
-    
-    
+
+    public Carrito CrearCarrito(Cliente clienteNuevo, DescuentoFactory factory)
+    {
+        if (clienteNuevo == null)
+            throw new ArgumentNullException(nameof(clienteNuevo));
+        if (factory == null)
+            throw new ArgumentNullException(nameof(factory));
+
+        var descuento = factory.CrearDescuento();
+        var carrito = new Carrito(clienteNuevo, descuento);
+        
+        clienteNuevo.asignarCarrito(carrito);
+        
+        return carrito;
+    }
 }
