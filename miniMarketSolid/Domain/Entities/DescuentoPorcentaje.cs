@@ -1,4 +1,6 @@
-﻿namespace miniMarketSolid.Domain.Entities
+﻿using System;
+
+namespace miniMarketSolid.Domain.Entities
 {
     public sealed class DescuentoPorcentaje : Descuento
     {

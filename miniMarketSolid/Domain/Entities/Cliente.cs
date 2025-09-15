@@ -49,10 +49,10 @@ namespace miniMarketSolid.Domain.Entities
         }
         #endregion
 
-        #region Métodos
-        public void AsignarCarrito(Carrito nuevoCarrito)
+        public void asignarCarrito(Carrito carritoNuevo)
         {
-            carrito = nuevoCarrito;
+            carrito = carritoNuevo;
+
         }
         #endregion
     }
