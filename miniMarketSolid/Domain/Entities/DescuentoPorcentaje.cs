@@ -2,7 +2,7 @@
 
 namespace miniMarketSolid.Domain.Entities
 {
-    public sealed class DescuentoPorcentaje : Descuento
+    public sealed class DescuentoPorcentaje : IDescuento
     {
         private readonly decimal porcentaje;
 

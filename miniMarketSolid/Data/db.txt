@@ -1,0 +1,34 @@
+{
+  "Clientes": [
+    {
+      "IdCliente": 1,
+      "Nombre": "Santiago Saavedra",
+      "Email": "santiago.saavedra@gmail.com",
+      "Telefono": 71234567
+    },
+    {
+      "IdCliente": 2,
+      "Nombre": "Nikita Saavedra",
+      "Email": "nikita.saavedra@gmail.com",
+      "Telefono": 76543210
+    },
+  ],
+  "Productos": [
+    {
+      "Id": 1,
+      "Nombre": "Zapatillas",
+      "Descripcion": "Deportivas",
+      "Precio": 100,
+      "Stock": 15,
+      "ImagenUrl": "url1"
+    },
+    {
+      "Id": 2,
+      "Nombre": "Gorra",
+      "Descripcion": "Visera curva",
+      "Precio": 35,
+      "Stock": 60,
+      "ImagenUrl": "url3"
+    }
+  ]
+}

@@ -1,6 +1,6 @@
 ﻿namespace miniMarketSolid.Domain.Entities
 {
-    public interface Descuento
+    public interface IDescuento
     {
         decimal AplicarDescuento(decimal montoTotal);
     }

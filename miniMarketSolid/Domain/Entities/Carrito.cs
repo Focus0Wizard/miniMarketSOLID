@@ -10,7 +10,7 @@ namespace miniMarketSolid.Domain.Entities
         private int id;
         private Cliente cliente;
         private List<ItemCarrito> items;
-        private Descuento descuento;
+        private IDescuento descuento;
         #endregion
 
         #region Propiedades
@@ -29,7 +29,7 @@ namespace miniMarketSolid.Domain.Entities
             get { return items; }
             set { items = value; }
         }
-        public Descuento Descuento
+        public IDescuento Descuento
         {
             get { return descuento; }
             set { descuento = value; }
@@ -42,7 +42,7 @@ namespace miniMarketSolid.Domain.Entities
             this.cliente = cliente;
             this.items = new List<ItemCarrito>();
         }
-        public Carrito(Cliente cliente, Descuento descuento)
+        public Carrito(Cliente cliente, IDescuento descuento)
             : this(cliente)
         {
             this.descuento = descuento;
