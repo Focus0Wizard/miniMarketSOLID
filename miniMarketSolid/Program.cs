@@ -7,7 +7,7 @@ using miniMarketSolid.Infrastructure.Persistence;
 var builder = WebApplication.CreateBuilder(args);
 
 // Infra TXT/JSON
-builder.Services.AddSingleton(new AppDbContext("data/db.txt"));
+builder.Services.AddSingleton(new AppDbContext("/home/jhonn/Documentos/Universidad/8vo_Semestre/Arquitectura_Software/miniMarketSOLID/miniMarketSolid/data/db.txt"));
 
 // Repos
 builder.Services.AddScoped<IClienteRepository, ClienteRepository>();

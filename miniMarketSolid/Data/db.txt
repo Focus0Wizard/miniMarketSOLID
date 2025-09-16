@@ -1,15 +1,8 @@
 {
   "Clientes": [
     {
-      "IdCliente": 1,
-      "Nombre": "Juan P\u00E9rez",
-      "Email": "juan.perez@mail.com",
-      "Telefono": 77711111,
-      "Carrito": null
-    },
-    {
       "IdCliente": 2,
-      "Nombre": "Mar\u00EDa L\u00F3pez",
+      "Nombre": "Santi Saavedra",
       "Email": "maria.lopez@mail.com",
       "Telefono": 77722222,
       "Carrito": null

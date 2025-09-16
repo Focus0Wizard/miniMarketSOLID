@@ -1,6 +1,28 @@
 ﻿@page
 @{
-    ViewData["Title"] = "Inicio";
+    ViewData["Title"] = "Iniciar Sesión";
+    var error = TempData["ErrorMessage"] as string;
 }
-<h1 class="mb-3">Inicio</h1>
-<p>Layout cargado correctamente.</p>
+
+<h2>Iniciar Sesión</h2>
+
+<form method="post" id="loginForm">
+    <div class="form-group">
+        <label for="username">Usuario</label>
+        <input type="text" id="username" name="username" class="form-control" required />
+    </div>
+
+    <div class="form-group">
+        <label for="password">Contraseña</label>
+        <input type="password" id="password" name="password" class="form-control" required />
+    </div>
+
+    <button type="submit" class="btn btn-primary">Ingresar</button>
+</form>
+
+@if (!string.IsNullOrEmpty(error))
+{
+    <div class="alert alert-danger mt-3">
+        @error
+    </div>
+}

@@ -1,0 +1,12 @@
+{
+  "Clientes": [
+    {
+      "IdCliente": 1,
+      "Nombre": "Juan Fajardo",
+      "Email": "juan@gmail.com",
+      "Telefono": 72131312,
+      "Carrito": null
+    }
+  ],
+  "Productos": []
+}
