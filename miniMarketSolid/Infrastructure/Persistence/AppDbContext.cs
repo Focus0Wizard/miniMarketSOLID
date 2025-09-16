@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using System.IO;
-using System.Text;
-using System.Text.Json;
+﻿using System.Text.Json;
 using miniMarketSolid.Domain.Entities;
 
 namespace miniMarketSolid.Infrastructure.Persistence
@@ -10,98 +7,91 @@ namespace miniMarketSolid.Infrastructure.Persistence
     {
         private readonly string rutaArchivo;
 
-        private readonly JsonSerializerOptions opciones = new JsonSerializerOptions
-        {
-            WriteIndented = true,
-            AllowTrailingCommas = true,
-            ReadCommentHandling = JsonCommentHandling.Skip,
-            PropertyNameCaseInsensitive = true
-        };
-        private void NormalizarEncodingAUtf8()
-        {
-            try
-            {
-                using var sr = new StreamReader(rutaArchivo, new UTF8Encoding(false, true));
-                _ = sr.ReadToEnd();
-                return;
-            }
-            catch
-            {
-                byte[] bytes = File.ReadAllBytes(rutaArchivo);
-                string textoLatin1 = Encoding.Latin1.GetString(bytes);
-                File.WriteAllText(rutaArchivo, textoLatin1, new UTF8Encoding(encoderShouldEmitUTF8Identifier: false));
-            }
-        }
+        public List<Cliente> Clientes { get; private set; } = new();
+        public List<Producto> Productos { get; private set; } = new();
 
-        public List<Cliente> Clientes { get; set; }
-        public List<Producto> Productos { get; set; }
+        private class CarritoRow { public int IdCliente { get; set; } public List<ItemRow> Items { get; set; } = new(); }
+        private class ItemRow { public int IdProducto { get; set; } public int Cantidad { get; set; } }
 
-        private class Snapshot
-        {
-            public List<Cliente> Clientes { get; set; }
-            public List<Producto> Productos { get; set; }
-        }
+        private List<CarritoRow> Carritos { get; set; } = new();
 
         public AppDbContext(string rutaArchivo)
         {
             this.rutaArchivo = rutaArchivo;
-            Clientes = new List<Cliente>();
-            Productos = new List<Producto>();
-            AsegurarArchivo();
             Cargar();
-        }
-
-        private void AsegurarArchivo()
-        {
-            string directorio = Path.GetDirectoryName(rutaArchivo);
-            if (!string.IsNullOrEmpty(directorio) && !Directory.Exists(directorio))
-            {
-                Directory.CreateDirectory(directorio);
-            }
-
-            if (!File.Exists(rutaArchivo))
-            {
-                Snapshot snapshotNuevo = new Snapshot
-                {
-                    Clientes = new List<Cliente>(),
-                    Productos = new List<Producto>()
-                };
-
-                string jsonNuevo = JsonSerializer.Serialize(snapshotNuevo, opciones);
-                File.WriteAllText(rutaArchivo, jsonNuevo, new UTF8Encoding(encoderShouldEmitUTF8Identifier: false));
-            }
         }
 
         public void Cargar()
         {
-            NormalizarEncodingAUtf8();
-            string json = File.ReadAllText(rutaArchivo, Encoding.UTF8);
-            Snapshot snapshotLeido = JsonSerializer.Deserialize<Snapshot>(json, opciones);
-
-            if (snapshotLeido != null)
+            if (!File.Exists(rutaArchivo))
             {
-                if (snapshotLeido.Clientes != null)
-                    Clientes = snapshotLeido.Clientes;
-                else
-                    Clientes = new List<Cliente>();
-
-                if (snapshotLeido.Productos != null)
-                    Productos = snapshotLeido.Productos;
-                else
-                    Productos = new List<Producto>();
+                Guardar();
+                return;
             }
+            var json = File.ReadAllText(rutaArchivo);
+            if (string.IsNullOrWhiteSpace(json)) { Guardar(); return; }
+
+            using var doc = JsonDocument.Parse(json);
+            var root = doc.RootElement;
+
+            Clientes = root.TryGetProperty("Clientes", out var cEl)
+                ? JsonSerializer.Deserialize<List<Cliente>>(cEl.GetRawText()) ?? new List<Cliente>()
+                : new List<Cliente>();
+
+            Productos = root.TryGetProperty("Productos", out var pEl)
+                ? JsonSerializer.Deserialize<List<Producto>>(pEl.GetRawText()) ?? new List<Producto>()
+                : new List<Producto>();
+
+            Carritos = root.TryGetProperty("Carritos", out var kEl)
+                ? JsonSerializer.Deserialize<List<CarritoRow>>(kEl.GetRawText()) ?? new List<CarritoRow>()
+                : new List<CarritoRow>();
         }
 
         public void Guardar()
         {
-            Snapshot snapshot = new Snapshot
+            var payload = new
             {
-                Clientes = Clientes,
-                Productos = Productos
+                Clientes,
+                Productos,
+                Carritos
             };
+            var json = JsonSerializer.Serialize(payload, new JsonSerializerOptions { WriteIndented = true });
+            var dir = Path.GetDirectoryName(rutaArchivo);
+            if (!string.IsNullOrEmpty(dir) && !Directory.Exists(dir)) Directory.CreateDirectory(dir);
+            File.WriteAllText(rutaArchivo, json);
+        }
 
-            string json = JsonSerializer.Serialize(snapshot, opciones);
-            File.WriteAllText(rutaArchivo, json, new UTF8Encoding(encoderShouldEmitUTF8Identifier: false));
+        public Carrito ObtenerCarrito(int idCliente, Cliente cliente)
+        {
+            var row = Carritos.FirstOrDefault(c => c.IdCliente == idCliente);
+            if (row == null)
+            {
+                row = new CarritoRow { IdCliente = idCliente };
+                Carritos.Add(row);
+                Guardar();
+            }
+
+            var items = new List<ItemCarrito>();
+            foreach (var r in row.Items)
+            {
+                var prod = Productos.FirstOrDefault(p => p.Id == r.IdProducto);
+                if (prod != null) items.Add(new ItemCarrito(0, prod, r.Cantidad));
+            }
+
+            var carrito = new Carrito(cliente) { Items = items };
+            return carrito;
+        }
+
+        public void GuardarCarrito(int idCliente, Carrito carrito)
+        {
+            var row = Carritos.FirstOrDefault(c => c.IdCliente == idCliente);
+            if (row == null)
+            {
+                row = new CarritoRow { IdCliente = idCliente };
+                Carritos.Add(row);
+            }
+            row.Items = carrito.Items.Select(i => new ItemRow { IdProducto = i.Producto.Id, Cantidad = i.Cantidad }).ToList();
+            Guardar();
         }
     }
 }
