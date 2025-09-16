@@ -2,16 +2,9 @@
   "Clientes": [
     {
       "IdCliente": 2,
-      "Nombre": "Santi Saavedra",
+      "Nombre": "Santiago Saavedra",
       "Email": "maria.lopez@mail.com",
       "Telefono": 77722222,
-      "Carrito": null
-    },
-    {
-      "IdCliente": 3,
-      "Nombre": "Carlos Vargas",
-      "Email": "carlos.vargas@mail.com",
-      "Telefono": 77733333,
       "Carrito": null
     },
     {
@@ -25,7 +18,7 @@
   "Productos": [
     {
       "Id": 1,
-      "Nombre": "Zapatillass",
+      "Nombre": "Zapatillas",
       "Descripcion": "Zapatillas deportivas de alta calidad",
       "Precio": 100,
       "Stock": 15,
@@ -63,5 +56,6 @@
       "Stock": 15,
       "ImagenUrl": "https://cdn-icons-png.flaticon.com/512/3305/3305803.png"
     }
-  ]
+  ],
+  "Carritos": []
 }
