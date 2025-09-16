@@ -1,79 +1,64 @@
 using System;
+using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace miniMarketSolid.Domain.Entities
 {
     public class Producto
     {
-        #region Atributos
-        private int id;
-        private string nombre;
-        private string descripcion;
-        private double precio;
-        private int stock;
-        private string imagenUrl;
-        #endregion
-
         #region Propiedades
-        public int Id
-        {
-            get { return id; }
-            set { id = value; }
-        }
-        public string Nombre
-        {
-            get { return nombre; }
-            set { nombre = value; }
-        }
-        public string Descripcion
-        {
-            get { return descripcion; }
-            set { descripcion = value; }
-        }
-        public double Precio
-        {
-            get { return precio; }
-            set { precio = value; }
-        }
-        public int Stock
-        {
-            get { return stock; }
-            set { stock = value; }
-        }
-        public string ImagenUrl
-        {
-            get { return imagenUrl; }
-            set { imagenUrl = value; }
-        }
+        [JsonInclude]
+        public int Id { get; private set; }
+
+        [Required(ErrorMessage = "El Nombre es obligatorio")]
+        [StringLength(100, ErrorMessage = "El Nombre no puede exceder los 100 caracteres")]
+        public string Nombre { get; set; }
+
+        [Required(ErrorMessage = "La Descripción es obligatoria")]
+        [StringLength(200, ErrorMessage = "La Descripción no puede exceder los 200 caracteres")]
+        public string Descripcion { get; set; }
+
+        [Required(ErrorMessage = "El Precio es obligatorio")]
+        [Range(0.01, double.MaxValue, ErrorMessage = "El Precio debe ser mayor a 0")]
+        public double Precio { get; set; }
+
+        [Required(ErrorMessage = "El Stock es obligatorio")]
+        [Range(0, int.MaxValue, ErrorMessage = "El Stock no puede ser negativo")]
+        public int Stock { get; set; }
+
+        [Required(ErrorMessage = "La URL de la imagen es obligatoria")]
+        [Url(ErrorMessage = "Formato de URL no válido")]
+        public string ImagenUrl { get; set; }
         #endregion
 
         #region Constructores
-        public Producto()
-        {
+        public Producto() { }
 
-        }
         public Producto(int id, string nombre, string descripcion, double precio, int stock, string imagenUrl)
         {
-            this.id = id;
-            this.nombre = nombre;
-            this.descripcion = descripcion;
-            this.precio = precio;
-            this.stock = stock;
-            this.imagenUrl = imagenUrl;
+            Id = id;
+            Nombre = nombre;
+            Descripcion = descripcion;
+            Precio = precio;
+            Stock = stock;
+            ImagenUrl = imagenUrl;
         }
         #endregion
 
         #region Métodos
         public void ActualizarPrecio(double nuevoPrecio)
         {
-            precio = nuevoPrecio;
+            Precio = nuevoPrecio;
         }
+
         public void ReducirStock(int cantidad)
         {
-            stock = stock - cantidad;
+            Stock -= cantidad;
         }
+
         public void AumentarStock(int cantidad)
         {
-            stock = stock + cantidad;
+            Stock += cantidad;
         }
         #endregion
     }

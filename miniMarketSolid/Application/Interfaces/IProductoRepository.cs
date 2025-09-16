@@ -6,8 +6,11 @@ namespace miniMarketSolid.Application.Interfaces
     public interface IProductoRepository
     {
         List<Producto> ObtenerTodos();
-        void Agregar(Producto producto);
         Producto BuscarPorId(int idProducto);
+        void Agregar(Producto producto);
+        void Actualizar(Producto producto);
+        void EliminarPorId(int idProducto);
         void GuardarCambios();
     }
+
 }

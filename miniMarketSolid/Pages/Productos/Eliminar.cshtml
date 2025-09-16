@@ -1,0 +1,13 @@
+﻿@page "{id:int}"
+@model miniMarketSolid.Pages.Productos.EliminarModel
+@{
+    ViewData["Title"] = "Eliminar producto";
+}
+<h2>Eliminar producto</h2>
+<p>¿Seguro que deseas eliminar <strong>@Model.Producto?.Nombre</strong> (ID @Model.Producto?.Id)?</p>
+
+<form method="post" asp-page-handler="Confirmar">
+    <input type="hidden" name="id" value="@Model.Producto?.Id" />
+    <button type="submit" class="btn btn-danger">Eliminar</button>
+    <a class="btn btn-outline-secondary" href="/Productos/Index">Cancelar</a>
+</form>

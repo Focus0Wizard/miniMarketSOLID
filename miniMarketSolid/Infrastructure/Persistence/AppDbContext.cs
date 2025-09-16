@@ -1,6 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
+using System.Text;
 using System.Text.Json;
 using miniMarketSolid.Domain.Entities;
 
@@ -9,8 +9,29 @@ namespace miniMarketSolid.Infrastructure.Persistence
     public class AppDbContext
     {
         private readonly string rutaArchivo;
-        private readonly JsonSerializerOptions opciones =
-            new JsonSerializerOptions { WriteIndented = true };
+
+        private readonly JsonSerializerOptions opciones = new JsonSerializerOptions
+        {
+            WriteIndented = true,
+            AllowTrailingCommas = true,
+            ReadCommentHandling = JsonCommentHandling.Skip,
+            PropertyNameCaseInsensitive = true
+        };
+        private void NormalizarEncodingAUtf8()
+        {
+            try
+            {
+                using var sr = new StreamReader(rutaArchivo, new UTF8Encoding(false, true));
+                _ = sr.ReadToEnd();
+                return;
+            }
+            catch
+            {
+                byte[] bytes = File.ReadAllBytes(rutaArchivo);
+                string textoLatin1 = Encoding.Latin1.GetString(bytes);
+                File.WriteAllText(rutaArchivo, textoLatin1, new UTF8Encoding(encoderShouldEmitUTF8Identifier: false));
+            }
+        }
 
         public List<Cliente> Clientes { get; set; }
         public List<Producto> Productos { get; set; }
@@ -24,77 +45,63 @@ namespace miniMarketSolid.Infrastructure.Persistence
         public AppDbContext(string rutaArchivo)
         {
             this.rutaArchivo = rutaArchivo;
-            VerificarArchivo();
+            Clientes = new List<Cliente>();
+            Productos = new List<Producto>();
+            AsegurarArchivo();
             Cargar();
         }
 
-        private void VerificarArchivo()
+        private void AsegurarArchivo()
         {
             string directorio = Path.GetDirectoryName(rutaArchivo);
-            if (string.IsNullOrWhiteSpace(directorio))
-            {
-                directorio = ".";
-            }
-
-            if (!Directory.Exists(directorio))
+            if (!string.IsNullOrEmpty(directorio) && !Directory.Exists(directorio))
             {
                 Directory.CreateDirectory(directorio);
             }
 
             if (!File.Exists(rutaArchivo))
             {
-                var snapshot = new Snapshot
+                Snapshot snapshotNuevo = new Snapshot
                 {
                     Clientes = new List<Cliente>(),
                     Productos = new List<Producto>()
                 };
-                string json = JsonSerializer.Serialize(snapshot, opciones);
-                File.WriteAllText(rutaArchivo, json);
+
+                string jsonNuevo = JsonSerializer.Serialize(snapshotNuevo, opciones);
+                File.WriteAllText(rutaArchivo, jsonNuevo, new UTF8Encoding(encoderShouldEmitUTF8Identifier: false));
             }
         }
 
         public void Cargar()
         {
-            string json = File.ReadAllText(rutaArchivo);
-            Snapshot snapshot = JsonSerializer.Deserialize<Snapshot>(json, opciones);
+            NormalizarEncodingAUtf8();
+            string json = File.ReadAllText(rutaArchivo, Encoding.UTF8);
+            Snapshot snapshotLeido = JsonSerializer.Deserialize<Snapshot>(json, opciones);
 
-            if (snapshot != null)
+            if (snapshotLeido != null)
             {
-                if (snapshot.Clientes != null)
-                {
-                    Clientes = snapshot.Clientes;
-                }
+                if (snapshotLeido.Clientes != null)
+                    Clientes = snapshotLeido.Clientes;
                 else
-                {
                     Clientes = new List<Cliente>();
-                }
 
-                if (snapshot.Productos != null)
-                {
-                    Productos = snapshot.Productos;
-                }
+                if (snapshotLeido.Productos != null)
+                    Productos = snapshotLeido.Productos;
                 else
-                {
                     Productos = new List<Producto>();
-                }
-            }
-            else
-            {
-                Clientes = new List<Cliente>();
-                Productos = new List<Producto>();
             }
         }
 
         public void Guardar()
         {
-            var snapshot = new Snapshot
+            Snapshot snapshot = new Snapshot
             {
                 Clientes = Clientes,
                 Productos = Productos
             };
 
             string json = JsonSerializer.Serialize(snapshot, opciones);
-            File.WriteAllText(rutaArchivo, json);
+            File.WriteAllText(rutaArchivo, json, new UTF8Encoding(encoderShouldEmitUTF8Identifier: false));
         }
     }
 }
