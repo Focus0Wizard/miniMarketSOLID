@@ -76,13 +76,28 @@ namespace miniMarketSolid.Domain.Entities
         {
             double subtotal = Items.Sum(i => i.subtotal);
 
-            if (descuento == null)
+            double totalDescuentos = 0;
+
+            int unidades = Items.Sum(i => i.Cantidad);
+            if (unidades >= 5)
             {
-                return subtotal;
+                totalDescuentos += subtotal * 0.10;
             }
 
-            decimal totalConDescuento = descuento.AplicarDescuento((decimal)subtotal);
-            return (double)totalConDescuento;
+            if (subtotal >= 2000)
+            {
+                totalDescuentos += 20.0;
+            }
+
+            if (descuento != null)
+            {
+                decimal aplicado = descuento.AplicarDescuento((decimal)subtotal);
+                double descuentoExtra = subtotal - (double)aplicado;
+                if (descuentoExtra > 0) totalDescuentos += descuentoExtra;
+            }
+
+            double total = subtotal - totalDescuentos;
+            return total < 0 ? 0 : total;
         }
         #endregion
     }

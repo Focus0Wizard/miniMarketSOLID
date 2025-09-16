@@ -1,14 +1,15 @@
-﻿@page
+@page
 @model miniMarketSolid.Pages.Carritos.DetalleModel
 @{
-    ViewData["Title"] = "Mi carrito";
+    ViewData["Title"] = "Carrito";
 }
-<h2>Mi carrito</h2>
+
+<h2>Carrito</h2>
 
 @if (Model.Items.Count == 0)
 {
-    <p>No hay productos en tu carrito.</p>
-    <a class="btn btn-outline-primary" href="/Catalogo/Index">Ir al catálogo</a>
+    <div class="alert alert-info">Tu carrito está vacío.</div>
+    <a class="btn btn-outline-primary" href="/Catalogo/Index">Seguir comprando</a>
 }
 else
 {
@@ -16,13 +17,30 @@ else
         <thead>
             <tr>
                 <th>Producto</th>
-                <th>Precio</th>
-                <th style="width:160px">Cantidad</th>
-                <th>Subtotal</th>
+                <th class="text-end">Precio</th>
+                <th class="text-center" style="width:160px;">Cantidad</th>
+                <th class="text-end">Subtotal</th>
                 <th></th>
             </tr>
         </thead>
         <tbody>
+            @foreach (var it in Model.Items)
+            {
+                <tr>
+                    <td>@it.Producto.Nombre</td>
+                    <td class="text-end">Bs. @it.Producto.Precio</td>
+                    <td class="text-center">
+                        <form method="post" asp-page-handler="Cantidad" class="d-inline-flex gap-2">
+                            <input type="hidden" name="idProducto" value="@it.Producto.Id" />
+                            <input type="number" name="cantidadNueva" value="@it.Cantidad" min="1" class="form-control form-control-sm" style="width:80px;" />
+                            <button class="btn btn-sm btn-outline-secondary" type="submit">Actualizar</button>
+                        </form>
+                    </td>
+                    <td class="text-end">Bs. @it.subtotal</td>
+                    <td class="text-end">
+                        <form method="post" asp-page-handler="Quitar">
+                            <input type="hidden" name="idProducto" value="@it.Producto.Id" />
+                            <button class="btn btn-sm btn-outline-danger">Quitar</button>
             @foreach (var i in Model.Items)
             {
                 <tr>
@@ -47,10 +65,46 @@ else
         </tbody>
     </table>
 
-    <div class="d-flex justify-content-between">
-        <form method="post" asp-page-handler="Vaciar">
-            <button class="btn btn-outline-secondary" type="submit">Vaciar carrito</button>
-        </form>
-        <div class="h5">Total: Bs. @Model.Total</div>
+    <div class="row">
+        <div class="col-12 col-lg-6">
+            <a class="btn btn-outline-primary" href="/Catalogo/Index">Seguir comprando</a>
+        </div>
+
+        <div class="col-12 col-lg-6">
+            <div class="card">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <span>Subtotal</span>
+                        <strong>Bs. @Model.Subtotal</strong>
+                    </div>
+
+                    @if (Model.Descuentos.Any())
+                    {
+                        <hr />
+                        <div class="mb-2">
+                            @foreach (var d in Model.Descuentos)
+                            {
+                                <div class="d-flex justify-content-between align-items-center mb-1">
+                                    <span class="badge text-bg-success">@d.Etiqueta</span>
+                                    <span class="text-success">- Bs. @d.Monto</span>
+                                </div>
+                            }
+                        </div>
+                    }
+
+                    <hr />
+                    <div class="d-flex justify-content-between fs-5">
+                        <span><strong>Total</strong></span>
+                        <strong>Bs. @Model.Total</strong>
+                    </div>
+
+                    <div class="mt-3 d-flex gap-2">
+                        <form method="post" asp-page-handler="Vaciar">
+                            <button class="btn btn-outline-danger" type="submit">Vaciar carrito</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 }
