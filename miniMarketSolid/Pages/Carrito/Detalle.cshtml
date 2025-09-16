@@ -4,57 +4,62 @@
     ViewData["Title"] = "Carrito";
 }
 
-<h2>Carrito</h2>
+<h2 class="mb-4">Carrito</h2>
 
 @if (Model.Items.Count == 0)
 {
-    <div class="alert alert-info">Tu carrito está vacío.</div>
-    <a class="btn btn-outline-primary" href="/Catalogo/Index">Seguir comprando</a>
+    <div class="alert alert-info shadow-sm rounded">
+        Tu carrito está vacío.
+    </div>
+    <a class="btn btn-outline-sky" href="/Catalogo/Index">Seguir comprando</a>
 }
 else
 {
-    <table class="table align-middle">
-        <thead>
-            <tr>
-                <th>Producto</th>
-                <th class="text-end">Precio</th>
-                <th class="text-center" style="width:160px;">Cantidad</th>
-                <th class="text-end">Subtotal</th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var it in Model.Items)
-            {
+    <div class="table-responsive">
+        <table class="table table-hover align-middle shadow-soft rounded-4 overflow-hidden">
+            <thead class="table-light">
                 <tr>
-                    <td>@it.Producto.Nombre</td>
-                    <td class="text-end">Bs. @it.Producto.Precio</td>
-                    <td class="text-center">
-                        <form method="post" asp-page-handler="Cantidad" class="d-inline-flex gap-2">
-                            <input type="hidden" name="idProducto" value="@it.Producto.Id" />
-                            <input type="number" name="cantidadNueva" value="@it.Cantidad" min="1" class="form-control form-control-sm" style="width:80px;" />
-                            <button class="btn btn-sm btn-outline-secondary" type="submit">Actualizar</button>
-                        </form>
-                    </td>
-                    <td class="text-end">Bs. @it.subtotal</td>
-                    <td class="text-end">
-                        <form method="post" asp-page-handler="Quitar">
-                            <input type="hidden" name="idProducto" value="@it.Producto.Id" />
-                            <button class="btn btn-sm btn-outline-danger">Quitar</button>
-                        </form>
-                    </td>
+                    <th>Producto</th>
+                    <th class="text-end">Precio</th>
+                    <th class="text-center" style="width:160px;">Cantidad</th>
+                    <th class="text-end">Subtotal</th>
+                    <th></th>
                 </tr>
-            }
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                @foreach (var it in Model.Items)
+                {
+                    <tr>
+                        <td class="fw-medium">@it.Producto.Nombre</td>
+                        <td class="text-end">Bs. @it.Producto.Precio</td>
+                        <td class="text-center">
+                            <form method="post" asp-page-handler="Cantidad" class="d-inline-flex gap-2">
+                                <input type="hidden" name="idProducto" value="@it.Producto.Id" />
+                                <input type="number" name="cantidadNueva" value="@it.Cantidad" min="1"
+                                       class="form-control form-control-sm text-center" style="width:84px;" />
+                                <button class="btn btn-outline-sky" type="submit">Actualizar</button>
+                            </form>
+                        </td>
+                        <td class="text-end">Bs. @it.subtotal</td>
+                        <td class="text-end">
+                            <form method="post" asp-page-handler="Quitar">
+                                <input type="hidden" name="idProducto" value="@it.Producto.Id" />
+                                <button class="btn btn-sm btn-outline-danger">Quitar</button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
 
-    <div class="row">
+    <div class="row g-3 mt-1">
         <div class="col-12 col-lg-6">
-            <a class="btn btn-outline-primary" href="/Catalogo/Index">Seguir comprando</a>
+            <a class="btn btn-outline-sky" href="/Catalogo/Index">Seguir comprando</a>
         </div>
 
         <div class="col-12 col-lg-6">
-            <div class="card">
+            <div class="card shadow-soft border-0 rounded-4">
                 <div class="card-body">
                     <div class="d-flex justify-content-between">
                         <span>Subtotal</span>
@@ -68,7 +73,7 @@ else
                             @foreach (var d in Model.Descuentos)
                             {
                                 <div class="d-flex justify-content-between align-items-center mb-1">
-                                    <span class="badge text-bg-success">@d.Etiqueta</span>
+                                    <span class="badge bg-success">@d.Etiqueta</span>
                                     <span class="text-success">- Bs. @d.Monto</span>
                                 </div>
                             }
@@ -77,7 +82,7 @@ else
 
                     <hr />
                     <div class="d-flex justify-content-between fs-5">
-                        <span><strong>Total</strong></span>
+                        <span class="fw-semibold">Total</span>
                         <strong>Bs. @Model.Total</strong>
                     </div>
 
@@ -90,4 +95,23 @@ else
             </div>
         </div>
     </div>
+
+    <div class="mb-5"></div>
+}
+
+@section Scripts {
+    <style>
+        .btn-cart {
+            background-color: #4dabf7;
+            color: #fff;
+            border-radius: 10px;
+            padding: 6px 16px;
+            transition: background-color 0.25s ease-in-out, transform 0.15s ease-in-out;
+        }
+
+            .btn-cart:hover {
+                background-color: #339af0;
+                transform: translateY(-2px);
+            }
+    </style>
 }
