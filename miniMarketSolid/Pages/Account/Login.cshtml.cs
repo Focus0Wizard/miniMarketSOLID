@@ -45,7 +45,7 @@ namespace miniMarketSolid.Pages.Account
                 return RedirectToPage("/Clientes/Index");
             }
 
-            var jsonPath = Path.Combine(Directory.GetCurrentDirectory(), "Data", "db.txt");
+            var jsonPath = Path.Combine(Directory.GetCurrentDirectory(), "data", "db.txt");
             var json = System.IO.File.ReadAllText(jsonPath);
             var db = JsonSerializer.Deserialize<DbShape>(json, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
 

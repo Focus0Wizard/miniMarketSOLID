@@ -1,26 +1,46 @@
-using Microsoft.AspNetCore.Builder;
-using Microsoft.Extensions.DependencyInjection;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using miniMarketSolid.Application.Interfaces;
 using miniMarketSolid.Application.Services;
 using miniMarketSolid.Infrastructure.Persistence;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Infra TXT/JSON
-builder.Services.AddSingleton(new AppDbContext("/home/jhonn/Documentos/Universidad/8vo_Semestre/Arquitectura_Software/miniMarketSOLID/miniMarketSolid/data/db.txt"));
+builder.Services.AddRazorPages(options =>
+{
+    options.Conventions.AllowAnonymousToPage("/Index");
+    options.Conventions.AllowAnonymousToPage("/Account/Login");
+    options.Conventions.AllowAnonymousToPage("/Account/Logout");
+    options.Conventions.AuthorizeFolder("/Clientes", "AdminOnly");
+    options.Conventions.AuthorizeFolder("/Productos", "AdminOnly");
+});
 
-// Repos
+builder.Services
+    .AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+    .AddCookie(o =>
+    {
+        o.LoginPath = "/Account/Login";
+        o.AccessDeniedPath = "/Account/Login";
+        o.ExpireTimeSpan = TimeSpan.FromHours(8);
+        o.SlidingExpiration = true;
+    });
+
+builder.Services.AddAuthorization(o =>
+{
+    o.AddPolicy("AdminOnly", p => p.RequireRole("Admin"));
+    o.AddPolicy("ClienteOrAdmin", p => p.RequireRole("Cliente", "Admin"));
+});
+
+var dataPath = Path.Combine(builder.Environment.ContentRootPath, "data", "db.txt");
+builder.Services.AddSingleton<AppDbContext>(_ => new AppDbContext(dataPath));
 builder.Services.AddScoped<IClienteRepository, ClienteRepository>();
-builder.Services.AddScoped(typeof(IProductoRepository), sp => new ProductoRepository(sp.GetRequiredService<AppDbContext>()));
-
-// Servicio
+builder.Services.AddScoped<IProductoRepository, ProductoRepository>();
 builder.Services.AddScoped<ITiendaOnlineService, TiendaOnline>();
-
-builder.Services.AddRazorPages();
 
 var app = builder.Build();
 
 app.UseStaticFiles();
 app.UseRouting();
+app.UseAuthentication();
+app.UseAuthorization();
 app.MapRazorPages();
 app.Run();

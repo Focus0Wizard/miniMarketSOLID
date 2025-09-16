@@ -1,28 +1,29 @@
 ﻿@page
+@model miniMarketSolid.Pages.IndexModel
 @{
-    ViewData["Title"] = "Iniciar Sesión";
-    var error = TempData["ErrorMessage"] as string;
+    ViewData["Title"] = "Inicio";
 }
 
-<h2>Iniciar Sesión</h2>
+<h2>Inicio</h2>
 
-<form method="post" id="loginForm">
-    <div class="form-group">
-        <label for="username">Usuario</label>
-        <input type="text" id="username" name="username" class="form-control" required />
-    </div>
-
-    <div class="form-group">
-        <label for="password">Contraseña</label>
-        <input type="password" id="password" name="password" class="form-control" required />
-    </div>
-
-    <button type="submit" class="btn btn-primary">Ingresar</button>
-</form>
-
-@if (!string.IsNullOrEmpty(error))
+@if (User.Identity?.IsAuthenticated == true)
 {
-    <div class="alert alert-danger mt-3">
-        @error
-    </div>
+    <p>Bienvenido, @User.Identity!.Name.</p>
+
+    @if (User.IsInRole("Admin"))
+    {
+        <p><a class="btn btn-outline-primary" href="/Clientes/Index">Administrar clientes</a></p>
+        <p><a class="btn btn-outline-primary" href="/Productos/Index">Administrar productos</a></p>
+    }
+    else
+    {
+        <p><a class="btn btn-outline-primary" href="/Productos/Index">Ver productos</a></p>
+    }
+}
+else
+{
+    <p>
+        Bienvenido a <strong>Tienda Online</strong>, el mejor lugar para encontrar productos
+        de calidad al mejor precio. Explora nuestro catálogo y añade tus favoritos al carrito.
+    </p>
 }

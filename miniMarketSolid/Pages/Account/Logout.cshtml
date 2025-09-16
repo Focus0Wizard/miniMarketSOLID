@@ -1,19 +1,10 @@
 @page
-@model miniMarketSolid.Pages.Account.Logout
-
+@model miniMarketSolid.Pages.Account.LogoutModel
 @{
-    Layout = null;
+    ViewData["Title"] = "Cerrar sesión";
 }
-
-<!DOCTYPE html>
-
-<html>
-<head>
-    <title></title>
-</head>
-<body>
-<div>
-    
-</div>
-</body>
-</html>
+<form method="post">
+    <p>¿Deseas cerrar sesión?</p>
+    <button type="submit" class="btn btn-danger">Cerrar sesión</button>
+    <a class="btn btn-outline-secondary" href="/">Cancelar</a>
+</form>
