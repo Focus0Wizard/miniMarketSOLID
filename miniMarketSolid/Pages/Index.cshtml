@@ -1,6 +1,29 @@
 ﻿@page
+@model miniMarketSolid.Pages.IndexModel
 @{
     ViewData["Title"] = "Inicio";
 }
-<h1 class="mb-3">Inicio</h1>
-<p>Layout cargado correctamente.</p>
+
+<h2>Inicio</h2>
+
+@if (User.Identity?.IsAuthenticated == true)
+{
+    <p>Bienvenido, @User.Identity!.Name.</p>
+
+    @if (User.IsInRole("Admin"))
+    {
+        <p><a class="btn btn-outline-primary" href="/Clientes/Index">Administrar clientes</a></p>
+        <p><a class="btn btn-outline-primary" href="/Productos/Index">Administrar productos</a></p>
+    }
+    else
+    {
+        <p><a class="btn btn-outline-primary" href="/Productos/Index">Ver productos</a></p>
+    }
+}
+else
+{
+    <p>
+        Bienvenido a <strong>Tienda Online</strong>, el mejor lugar para encontrar productos
+        de calidad al mejor precio. Explora nuestro catálogo y añade tus favoritos al carrito.
+    </p>
+}

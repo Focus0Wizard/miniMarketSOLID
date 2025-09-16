@@ -1,0 +1,28 @@
+{
+  "Clientes": [
+    {
+      "IdCliente": 1,
+      "Nombre": "Juan Fajardo",
+      "Email": "juan@gmail.com",
+      "Telefono": 72131312,
+      "Carrito": null
+    },
+    {
+      "IdCliente": 2,
+      "Nombre": "A",
+      "Email": "a@d.com",
+      "Telefono": 12345678,
+      "Carrito": null
+    }
+  ],
+  "Productos": [
+    {
+      "Id": 1,
+      "Nombre": "Condon",
+      "Descripcion": "Juan Condon",
+      "Precio": 12,
+      "Stock": 5,
+      "ImagenUrl": "https://pedidosonline.farmaciaschavez.com.bo:8443/catalogofchavez/27467/PRUDENCESABORCHICLEX5VETEALAVERSH-7730963250909_27467.jpg"
+    }
+  ]
+}
