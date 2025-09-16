@@ -25,11 +25,11 @@
   "Productos": [
     {
       "Id": 1,
-      "Nombre": "Zapatillas",
+      "Nombre": "Zapatillass",
       "Descripcion": "Zapatillas deportivas de alta calidad",
       "Precio": 100,
       "Stock": 15,
-      "ImagenUrl": "https://"
+      "ImagenUrl": "https://cdn-icons-png.flaticon.com/512/3305/3305803.png"
     },
     {
       "Id": 2,
@@ -37,7 +37,7 @@
       "Descripcion": "Camiseta de algod\u00F3n 100%",
       "Precio": 50,
       "Stock": 35,
-      "ImagenUrl": "https://"
+      "ImagenUrl": "https://cdn-icons-png.flaticon.com/512/3305/3305803.png"
     },
     {
       "Id": 3,
@@ -45,7 +45,7 @@
       "Descripcion": "Gorra con visera curva",
       "Precio": 30,
       "Stock": 40,
-      "ImagenUrl": "https://"
+      "ImagenUrl": "https://cdn-icons-png.flaticon.com/512/3305/3305803.png"
     },
     {
       "Id": 4,
@@ -53,7 +53,7 @@
       "Descripcion": "Pantal\u00F3n de mezclilla azul cl\u00E1sico",
       "Precio": 75,
       "Stock": 25,
-      "ImagenUrl": "https://"
+      "ImagenUrl": "https://cdn-icons-png.flaticon.com/512/3305/3305803.png"
     },
     {
       "Id": 5,
@@ -61,7 +61,7 @@
       "Descripcion": "Chaqueta impermeable ligera",
       "Precio": 120,
       "Stock": 15,
-      "ImagenUrl": "https://"
+      "ImagenUrl": "https://cdn-icons-png.flaticon.com/512/3305/3305803.png"
     }
   ]
 }
