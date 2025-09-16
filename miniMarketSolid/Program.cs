@@ -33,7 +33,7 @@ builder.Services.AddAuthorization(o =>
     o.AddPolicy("ClienteOrAdmin", p => p.RequireRole("Cliente", "Admin"));
 });
 
-var dataPath = Path.Combine(builder.Environment.ContentRootPath, "Data", "db.txt");
+var dataPath = Path.Combine(builder.Environment.ContentRootPath, "data", "db.txt");
 builder.Services.AddSingleton<AppDbContext>(_ => new AppDbContext(dataPath));
 builder.Services.AddScoped<IClienteRepository, ClienteRepository>();
 builder.Services.AddScoped<IProductoRepository, ProductoRepository>();
