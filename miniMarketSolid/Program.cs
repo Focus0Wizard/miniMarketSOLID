@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Authentication.Cookies;
+﻿using Microsoft.AspNetCore.Authentication.Cookies;
 using miniMarketSolid.Application.Interfaces;
 using miniMarketSolid.Application.Services;
 using miniMarketSolid.Infrastructure.Persistence;
@@ -12,6 +12,8 @@ builder.Services.AddRazorPages(options =>
     options.Conventions.AllowAnonymousToPage("/Account/Logout");
     options.Conventions.AuthorizeFolder("/Clientes", "AdminOnly");
     options.Conventions.AuthorizeFolder("/Productos", "AdminOnly");
+    options.Conventions.AuthorizeFolder("/Catalogo", "ClienteOnly");
+    options.Conventions.AuthorizeFolder("/Carrito", "ClienteOnly");
 });
 
 builder.Services
@@ -27,10 +29,11 @@ builder.Services
 builder.Services.AddAuthorization(o =>
 {
     o.AddPolicy("AdminOnly", p => p.RequireRole("Admin"));
+    o.AddPolicy("ClienteOnly", p => p.RequireRole("Cliente"));
     o.AddPolicy("ClienteOrAdmin", p => p.RequireRole("Cliente", "Admin"));
 });
 
-var dataPath = Path.Combine(builder.Environment.ContentRootPath, "data", "db.txt");
+var dataPath = Path.Combine(builder.Environment.ContentRootPath, "Data", "db.txt");
 builder.Services.AddSingleton<AppDbContext>(_ => new AppDbContext(dataPath));
 builder.Services.AddScoped<IClienteRepository, ClienteRepository>();
 builder.Services.AddScoped<IProductoRepository, ProductoRepository>();

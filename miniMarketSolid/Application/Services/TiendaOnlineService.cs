@@ -1,79 +1,84 @@
 using System.Collections.Generic;
+using System.Linq;
 using miniMarketSolid.Application.Interfaces;
 using miniMarketSolid.Domain.Entities;
 using miniMarketSolid.Domain.Factories;
+using miniMarketSolid.Infrastructure.Persistence;
 
 namespace miniMarketSolid.Application.Services
 {
     public class TiendaOnline : ITiendaOnlineService
     {
-        private readonly IClienteRepository _clienteRepository;
-        private readonly IProductoRepository _productoRepository;
+        private readonly IClienteRepository clienteRepository;
+        private readonly IProductoRepository productoRepository;
+        private readonly AppDbContext db;
 
-        public TiendaOnline(IClienteRepository clienteRepository, IProductoRepository productoRepository)
+        public TiendaOnline(IClienteRepository clienteRepository, IProductoRepository productoRepository, AppDbContext db)
         {
-            _clienteRepository = clienteRepository;
-            _productoRepository = productoRepository;
+            this.clienteRepository = clienteRepository;
+            this.productoRepository = productoRepository;
+            this.db = db;
         }
 
-        // ----- Consultas -----
-        public IReadOnlyCollection<Cliente> ObtenerClientes()
-        {
-            List<Cliente> datos = _clienteRepository.ObtenerTodos();
-            return datos.AsReadOnly();
-        }
+        public IReadOnlyCollection<Cliente> ObtenerClientes() => clienteRepository.ObtenerTodos().AsReadOnly();
+        public IReadOnlyCollection<Producto> ObtenerProductos() => productoRepository.ObtenerTodos().AsReadOnly();
 
-        public IReadOnlyCollection<Producto> ObtenerProductos()
-        {
-            List<Producto> datos = _productoRepository.ObtenerTodos();
-            return datos.AsReadOnly();
-        }
+        public void RegistrarCliente(Cliente c) { clienteRepository.Agregar(c); clienteRepository.GuardarCambios(); }
+        public void ActualizarCliente(Cliente c) { clienteRepository.Actualizar(c); clienteRepository.GuardarCambios(); }
+        public void EliminarCliente(int id) { clienteRepository.EliminarPorId(id); clienteRepository.GuardarCambios(); }
 
-        // ----- Clientes -----
-        public void RegistrarCliente(Cliente cliente)
-        {
-            _clienteRepository.Agregar(cliente);
-            _clienteRepository.GuardarCambios();
-        }
+        public void RegistrarProducto(Producto p) { productoRepository.Agregar(p); productoRepository.GuardarCambios(); }
+        public void ActualizarProducto(Producto p) { productoRepository.Actualizar(p); productoRepository.GuardarCambios(); }
+        public void EliminarProducto(int id) { productoRepository.EliminarPorId(id); productoRepository.GuardarCambios(); }
 
-        public void ActualizarCliente(Cliente cliente)
+        public Carrito ObtenerCarritoDeCliente(int idCliente)
         {
-            _clienteRepository.Actualizar(cliente);
-            _clienteRepository.GuardarCambios();
-        }
-
-        public void EliminarCliente(int idCliente)
-        {
-            _clienteRepository.EliminarPorId(idCliente);
-            _clienteRepository.GuardarCambios();
-        }
-
-        // ----- Productos -----
-        public void RegistrarProducto(Producto producto)
-        {
-            _productoRepository.Agregar(producto);
-            _productoRepository.GuardarCambios();
-        }
-
-        public void ActualizarProducto(Producto producto)
-        {
-            _productoRepository.Actualizar(producto);
-            _productoRepository.GuardarCambios();
-        }
-
-        public void EliminarProducto(int idProducto)
-        {
-            _productoRepository.EliminarPorId(idProducto);
-            _productoRepository.GuardarCambios();
-        }
-
-        // ----- Carrito -----
-        public Carrito CrearCarrito(Cliente cliente, DescuentoFactory fabricaDescuento)
-        {
-            IDescuento descuento = fabricaDescuento.CrearDescuento();
-            Carrito carrito = new Carrito(cliente, descuento);
-            cliente.asignarCarrito(carrito);
+            var cliente = clienteRepository.BuscarPorId(idCliente);
+            if (cliente == null) return new Carrito(new Cliente());
+            var carrito = db.ObtenerCarrito(idCliente, cliente);
             return carrito;
+        }
+
+        public void AgregarAlCarrito(int idCliente, int idProducto, int cantidad)
+        {
+            var cliente = clienteRepository.BuscarPorId(idCliente);
+            var producto = productoRepository.BuscarPorId(idProducto);
+            var carrito = db.ObtenerCarrito(idCliente, cliente);
+            carrito.AgregarProducto(producto, cantidad);
+            db.GuardarCarrito(idCliente, carrito);
+        }
+
+        public void CambiarCantidadItem(int idCliente, int idProducto, int cantidadNueva)
+        {
+            var cliente = clienteRepository.BuscarPorId(idCliente);
+            var carrito = db.ObtenerCarrito(idCliente, cliente);
+            var item = carrito.Items.FirstOrDefault(i => i.Producto.Id == idProducto);
+            if (item == null) return;
+            if (cantidadNueva <= 0) { carrito.RemoverProducto(item.Producto); }
+            else
+            {
+                var actual = item.Cantidad;
+                if (cantidadNueva > actual) item.IncrementarCantidad(cantidadNueva - actual);
+                else if (cantidadNueva < actual) item.ReducirCantidad(actual - cantidadNueva);
+            }
+            db.GuardarCarrito(idCliente, carrito);
+        }
+
+        public void QuitarDelCarrito(int idCliente, int idProducto)
+        {
+            var cliente = clienteRepository.BuscarPorId(idCliente);
+            var carrito = db.ObtenerCarrito(idCliente, cliente);
+            var item = carrito.Items.FirstOrDefault(i => i.Producto.Id == idProducto);
+            if (item != null) carrito.RemoverProducto(item.Producto);
+            db.GuardarCarrito(idCliente, carrito);
+        }
+
+        public void VaciarCarrito(int idCliente)
+        {
+            var cliente = clienteRepository.BuscarPorId(idCliente);
+            var carrito = db.ObtenerCarrito(idCliente, cliente);
+            foreach (var it in carrito.Items.ToList()) carrito.RemoverProducto(it.Producto);
+            db.GuardarCarrito(idCliente, carrito);
         }
     }
 }

@@ -53,7 +53,7 @@ namespace miniMarketSolid.Pages.Account
             if (match != null)
             {
                 await SignIn(match.Nombre, "Cliente", match.IdCliente.ToString());
-                return RedirectToPage("/Productos/Index");
+                return RedirectToPage("/Catalogo/Index");
             }
 
             TempData["ErrorMessage"] = "Usuario o contraseña incorrectos.";

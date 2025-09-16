@@ -2,27 +2,79 @@
   "Clientes": [
     {
       "IdCliente": 1,
-      "Nombre": "Juan Fajardo",
-      "Email": "juan@gmail.com",
-      "Telefono": 72131312,
+      "Nombre": "Santiago Saavedra",
+      "Email": "santiago.saavedra@ucb.edu.bo",
+      "Telefono": 69503355,
       "Carrito": null
     },
     {
       "IdCliente": 2,
-      "Nombre": "A",
-      "Email": "a@d.com",
-      "Telefono": 12345678,
+      "Nombre": "Jhonn Ramirez",
+      "Email": "jhonn.ramirez@ucb.edu.bo",
+      "Telefono": 79335992,
+      "Carrito": null
+    },
+    {
+      "IdCliente": 3,
+      "Nombre": "Antonio Ontiveros",
+      "Email": "antonio.ontiveros@ucb.edu.bo",
+      "Telefono": 60703313,
+      "Carrito": null
+    },
+    {
+      "IdCliente": 4,
+      "Nombre": "Camilo Padilla",
+      "Email": "camilo.padilla@ucb.edu.bo",
+      "Telefono": 61615904,
       "Carrito": null
     }
   ],
   "Productos": [
     {
       "Id": 1,
-      "Nombre": "Condon",
-      "Descripcion": "Juan Condon",
-      "Precio": 12,
-      "Stock": 5,
-      "ImagenUrl": "https://pedidosonline.farmaciaschavez.com.bo:8443/catalogofchavez/27467/PRUDENCESABORCHICLEX5VETEALAVERSH-7730963250909_27467.jpg"
+      "Nombre": "Zapatillass",
+      "Descripcion": "Zapatillas deportivas de alta calidad",
+      "Precio": 100,
+      "Stock": 15,
+      "ImagenUrl": "https://media.revistagq.com/photos/645219af4c1636d5edee17eb/4:3/w_1135,h_851,c_limit/nike%20air%20max%2090%20icons.jpg"
+    },
+    {
+      "Id": 2,
+      "Nombre": "Camiseta",
+      "Descripcion": "Camiseta de algod\u00F3n 100%",
+      "Precio": 50,
+      "Stock": 35,
+      "ImagenUrl": "https://frutocuatro.com/wp-content/uploads/2018/05/camiseta-64000-royal-frente.jpg"
+    },
+    {
+      "Id": 3,
+      "Nombre": "Gorra",
+      "Descripcion": "Gorra con visera curva",
+      "Precio": 30,
+      "Stock": 40,
+      "ImagenUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT1DkTN1bWfnQbVIsXgzmJAdOZIyxl9ouSeUA\u0026s"
+    },
+    {
+      "Id": 4,
+      "Nombre": "Pantalon",
+      "Descripcion": "Pantal\u00F3n de mezclilla azul cl\u00E1sico",
+      "Precio": 75,
+      "Stock": 25,
+      "ImagenUrl": "https://img.freepik.com/vector-premium/pantalon-jeans-hombre-plantilla-ilustracion-vectorial-dibujo-tecnico-boceto-plano_885893-224.jpg?w=360"
+    },
+    {
+      "Id": 5,
+      "Nombre": "Chaqueta",
+      "Descripcion": "Chaqueta impermeable ligera",
+      "Precio": 120,
+      "Stock": 15,
+      "ImagenUrl": "https://m.media-amazon.com/images/I/81OdP9bk1PL._UY1000_.jpg"
+    }
+  ],
+  "Carritos": [
+    {
+      "IdCliente": 1,
+      "Items": []
     }
   ]
 }

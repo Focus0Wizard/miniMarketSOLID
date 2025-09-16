@@ -33,7 +33,6 @@
             color: #6c757d;
         }
 
-        /* Botón estilo navbar reutilizable */
         .btn-nav {
             border: 1px solid #ced4da;
             color: #212529;
@@ -45,7 +44,6 @@
                 color: #212529;
             }
 
-        /* Marca activa en el menú */
         .nav-link.active {
             font-weight: 700;
             text-decoration: underline;
@@ -67,26 +65,42 @@
                     <li class="nav-item">
                         <a class="nav-link @(path == "/" || path == "/index" ? "active" : "")" href="/Index">Inicio</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link @(path.StartsWith("/clientes") ? "active" : "")" href="/Clientes/Index">Clientes</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link @(path.StartsWith("/productos") ? "active" : "")" href="/Productos/Index">Productos</a>
-                    </li>
-                    <li class="nav-item">
-                        @if (User.Identity?.IsAuthenticated == true)
+
+                    @if (User.Identity?.IsAuthenticated == true)
+                    {
+                        if (User.IsInRole("Admin"))
                         {
+                            <li class="nav-item">
+                                <a class="nav-link @(path.StartsWith("/clientes") ? "active" : "")" href="/Clientes/Index">Clientes</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link @(path.StartsWith("/productos") ? "active" : "")" href="/Productos/Index">Productos</a>
+                            </li>
+                        }
+                        else if (User.IsInRole("Cliente"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link @(path.StartsWith("/catalogo") ? "active" : "")" href="/Catalogo/Index">Productos</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link @(path.StartsWith("/carrito") ? "active" : "")" href="/Carrito/Detalle">Carrito</a>
+                            </li>
+                        }
+
+                        <li class="nav-item">
                             <form method="post" asp-page="/Account/Logout" class="d-inline">
                                 <button type="submit" class="btn btn-nav btn-sm">
                                     Salir (@User.Identity!.Name)
                                 </button>
                             </form>
-                        }
-                        else
-                        {
+                        </li>
+                    }
+                    else
+                    {
+                        <li class="nav-item">
                             <a class="btn btn-nav btn-sm" asp-page="/Account/Login">Ingresar</a>
-                        }
-                    </li>
+                        </li>
+                    }
                 </ul>
             </div>
         </div>
