@@ -2,9 +2,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using miniMarketSolid.Application.Interfaces;
 using miniMarketSolid.Domain.Entities;
+using miniMarketSolid.Domain.ValueObjects;
 using System.ComponentModel.DataAnnotations;
-using System.Globalization;
-using System.Linq;
 
 namespace miniMarketSolid.Pages.Clientes
 {
@@ -15,16 +14,13 @@ namespace miniMarketSolid.Pages.Clientes
 
         public class Input
         {
-            [Required(ErrorMessage = "El nombre es obligatorio")]
-            [StringLength(100)]
+            [Required(ErrorMessage = "El nombre es obligatorio"), StringLength(100)]
             public string Nombre { get; set; } = string.Empty;
 
-            [Required(ErrorMessage = "El correo es obligatorio")]
-            [EmailAddress(ErrorMessage = "Correo no válido")]
+            [Required(ErrorMessage = "El correo es obligatorio"), EmailAddress(ErrorMessage = "Correo no válido")]
             public string Email { get; set; } = string.Empty;
 
             [Required(ErrorMessage = "El teléfono es obligatorio")]
-            [RegularExpression(@"^\d{8}$", ErrorMessage = "Teléfono debe tener 8 dígitos")]
             public string Telefono { get; set; } = string.Empty;
         }
 
@@ -34,22 +30,22 @@ namespace miniMarketSolid.Pages.Clientes
 
         public IActionResult OnPost()
         {
+            string nombre, email; int tel;
+
+            try { nombre = ClienteValidation.NormalizarNombre(Form.Nombre); }
+            catch (ArgumentException ex) { ModelState.AddModelError("Form.Nombre", ex.Message); nombre = string.Empty; }
+
+            try { email = ClienteValidation.NormalizarEmail(Form.Email); }
+            catch (ArgumentException ex) { ModelState.AddModelError("Form.Email", ex.Message); email = string.Empty; }
+
+            try { tel = ClienteValidation.NormalizarTelefono(Form.Telefono); }
+            catch (ArgumentException ex) { ModelState.AddModelError("Form.Telefono", ex.Message); tel = 0; }
+
             if (!ModelState.IsValid) return Page();
 
-            string nombreTC = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(Form.Nombre.Trim().ToLower());
-            string emailNorm = Form.Email.Trim().ToLowerInvariant();
-            string telDigits = new string(Form.Telefono.Where(char.IsDigit).ToArray());
-
-            if (telDigits.Length != 8)
-            {
-                ModelState.AddModelError("Form.Telefono", "Teléfono debe tener 8 dígitos");
-                return Page();
-            }
-
-            var nuevo = new Cliente(0, nombreTC, emailNorm, int.Parse(telDigits)); // id se asigna en repo
+            var nuevo = new Cliente(0, nombre, email, tel);
             _tienda.RegistrarCliente(nuevo);
             return RedirectToPage("/Clientes/Index");
         }
     }
-
 }
