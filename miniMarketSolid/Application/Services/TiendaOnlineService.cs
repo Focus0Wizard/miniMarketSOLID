@@ -2,65 +2,72 @@ using System.Collections.Generic;
 using miniMarketSolid.Application.Interfaces;
 using miniMarketSolid.Domain.Entities;
 using miniMarketSolid.Domain.Factories;
-using miniMarketSolid.Infrastructure.Persistence;
 
 namespace miniMarketSolid.Application.Services
 {
     public class TiendaOnline : ITiendaOnlineService
     {
-        private readonly IClienteRepository clienteRepository;
-        private readonly IProductoRepository productoRepository;
+        private readonly IClienteRepository _clienteRepository;
+        private readonly IProductoRepository _productoRepository;
 
         public TiendaOnline(IClienteRepository clienteRepository, IProductoRepository productoRepository)
         {
-            this.clienteRepository = clienteRepository;
-            this.productoRepository = productoRepository;
+            _clienteRepository = clienteRepository;
+            _productoRepository = productoRepository;
         }
 
+        // ----- Consultas -----
         public IReadOnlyCollection<Cliente> ObtenerClientes()
         {
-            List<Cliente> listaClientes = clienteRepository.ObtenerTodos();
-            return listaClientes.AsReadOnly();
+            List<Cliente> datos = _clienteRepository.ObtenerTodos();
+            return datos.AsReadOnly();
         }
 
         public IReadOnlyCollection<Producto> ObtenerProductos()
         {
-            List<Producto> listaProductos = productoRepository.ObtenerTodos();
-            return listaProductos.AsReadOnly();
+            List<Producto> datos = _productoRepository.ObtenerTodos();
+            return datos.AsReadOnly();
         }
 
+        // ----- Clientes -----
         public void RegistrarCliente(Cliente cliente)
         {
-            clienteRepository.Agregar(cliente);
-            clienteRepository.GuardarCambios();
+            _clienteRepository.Agregar(cliente);
+            _clienteRepository.GuardarCambios();
         }
 
-        public void RegistrarProducto(Producto producto)
+        public void ActualizarCliente(Cliente cliente)
         {
-            productoRepository.Agregar(producto);
-            productoRepository.GuardarCambios();
+            _clienteRepository.Actualizar(cliente);
+            _clienteRepository.GuardarCambios();
         }
 
         public void EliminarCliente(int idCliente)
         {
-            Cliente clienteEncontrado = clienteRepository.BuscarPorId(idCliente);
-            if (clienteEncontrado != null)
-            {
-                clienteRepository.ObtenerTodos().Remove(clienteEncontrado);
-                clienteRepository.GuardarCambios();
-            }
+            _clienteRepository.EliminarPorId(idCliente);
+            _clienteRepository.GuardarCambios();
+        }
+
+        // ----- Productos -----
+        public void RegistrarProducto(Producto producto)
+        {
+            _productoRepository.Agregar(producto);
+            _productoRepository.GuardarCambios();
+        }
+
+        public void ActualizarProducto(Producto producto)
+        {
+            _productoRepository.Actualizar(producto);
+            _productoRepository.GuardarCambios();
         }
 
         public void EliminarProducto(int idProducto)
         {
-            Producto productoEncontrado = productoRepository.BuscarPorId(idProducto);
-            if (productoEncontrado != null)
-            {
-                productoRepository.ObtenerTodos().Remove(productoEncontrado);
-                productoRepository.GuardarCambios();
-            }
+            _productoRepository.EliminarPorId(idProducto);
+            _productoRepository.GuardarCambios();
         }
 
+        // ----- Carrito -----
         public Carrito CrearCarrito(Cliente cliente, DescuentoFactory fabricaDescuento)
         {
             IDescuento descuento = fabricaDescuento.CrearDescuento();

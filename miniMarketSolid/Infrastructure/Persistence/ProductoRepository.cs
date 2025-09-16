@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using miniMarketSolid.Application.Interfaces;
 using miniMarketSolid.Domain.Entities;
 
@@ -6,38 +7,58 @@ namespace miniMarketSolid.Infrastructure.Persistence
 {
     public class ProductoRepository : IProductoRepository
     {
-        private readonly AppDbContext contexto;
+        private readonly AppDbContext _context;
+        public ProductoRepository(AppDbContext context) { _context = context; }
 
-        public ProductoRepository(AppDbContext contexto)
-        {
-            this.contexto = contexto;
-        }
+        public List<Producto> ObtenerTodos() => _context.Productos;
 
-        public List<Producto> ObtenerTodos()
-        {
-            return contexto.Productos;
-        }
+        public Producto BuscarPorId(int idProducto) =>
+            _context.Productos.FirstOrDefault(p => p.Id == idProducto);
 
         public void Agregar(Producto producto)
         {
-            contexto.Productos.Add(producto);
+            // Generar Id automáticamente
+            int nuevoId = _context.Productos.Any()
+                ? _context.Productos.Max(p => p.Id) + 1
+                : 1;
+
+            var conId = new Producto(
+                nuevoId,
+                producto.Nombre,
+                producto.Descripcion,
+                producto.Precio,
+                producto.Stock,
+                producto.ImagenUrl
+            );
+
+            _context.Productos.Add(conId);
+            _context.Guardar();
         }
 
-        public Producto BuscarPorId(int idProducto)
+        public void Actualizar(Producto producto)
         {
-            foreach (var producto in contexto.Productos)
+            var existente = BuscarPorId(producto.Id);
+            if (existente != null)
             {
-                if (producto.Id == idProducto)
-                {
-                    return producto;
-                }
+                existente.Nombre = producto.Nombre;
+                existente.Descripcion = producto.Descripcion;
+                existente.Precio = producto.Precio;
+                existente.Stock = producto.Stock;
+                existente.ImagenUrl = producto.ImagenUrl;
+                _context.Guardar();
             }
-            return null;
         }
 
-        public void GuardarCambios()
+        public void EliminarPorId(int idProducto)
         {
-            contexto.Guardar();
+            var existente = BuscarPorId(idProducto);
+            if (existente != null)
+            {
+                _context.Productos.Remove(existente);
+                _context.Guardar();
+            }
         }
+
+        public void GuardarCambios() => _context.Guardar();
     }
 }

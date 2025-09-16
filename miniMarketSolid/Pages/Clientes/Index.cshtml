@@ -1,0 +1,29 @@
+﻿@page
+@model miniMarketSolid.Pages.Clientes.IndexModel
+@{
+    ViewData["Title"] = "Clientes";
+}
+<h1 class="mb-3">Clientes</h1>
+
+<p><a class="btn btn-nav" href="/Clientes/Crear">Registrar cliente</a></p>
+
+<table class="table table-striped">
+    <thead>
+        <tr><th>Id</th><th>Nombre</th><th>Email</th><th>Teléfono</th><th></th></tr>
+    </thead>
+    <tbody>
+        @foreach (var c in Model.ListaClientes)
+        {
+            <tr>
+                <td>@c.IdCliente</td>
+                <td>@c.Nombre</td>
+                <td>@c.Email</td>
+                <td>@c.Telefono</td>
+                <td class="text-nowrap">
+                    <a class="btn btn-sm btn-nav" href="/Clientes/Editar/@c.IdCliente">Editar</a>
+                    <a class="btn btn-sm btn-outline-danger" href="/Clientes/Eliminar/@c.IdCliente">Eliminar</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

@@ -2,33 +2,73 @@
   "Clientes": [
     {
       "IdCliente": 1,
-      "Nombre": "Santiago Saavedra",
-      "Email": "santiago.saavedra@gmail.com",
-      "Telefono": 71234567
+      "Nombre": "Juan P\u00E9rez",
+      "Email": "juan.perez@mail.com",
+      "Telefono": 77711111,
+      "Carrito": null
     },
     {
       "IdCliente": 2,
-      "Nombre": "Nikita Saavedra",
-      "Email": "nikita.saavedra@gmail.com",
-      "Telefono": 76543210
+      "Nombre": "Mar\u00EDa L\u00F3pez",
+      "Email": "maria.lopez@mail.com",
+      "Telefono": 77722222,
+      "Carrito": null
     },
+    {
+      "IdCliente": 3,
+      "Nombre": "Carlos Vargas",
+      "Email": "carlos.vargas@mail.com",
+      "Telefono": 77733333,
+      "Carrito": null
+    },
+    {
+      "IdCliente": 4,
+      "Nombre": "Ana Fern\u00E1ndez",
+      "Email": "ana.fernandez@mail.com",
+      "Telefono": 77744444,
+      "Carrito": null
+    }
   ],
   "Productos": [
     {
       "Id": 1,
       "Nombre": "Zapatillas",
-      "Descripcion": "Deportivas",
+      "Descripcion": "Zapatillas deportivas de alta calidad",
       "Precio": 100,
       "Stock": 15,
-      "ImagenUrl": "url1"
+      "ImagenUrl": "https://"
     },
     {
       "Id": 2,
+      "Nombre": "Camiseta",
+      "Descripcion": "Camiseta de algod\u00F3n 100%",
+      "Precio": 50,
+      "Stock": 35,
+      "ImagenUrl": "https://"
+    },
+    {
+      "Id": 3,
       "Nombre": "Gorra",
-      "Descripcion": "Visera curva",
-      "Precio": 35,
-      "Stock": 60,
-      "ImagenUrl": "url3"
+      "Descripcion": "Gorra con visera curva",
+      "Precio": 30,
+      "Stock": 40,
+      "ImagenUrl": "https://"
+    },
+    {
+      "Id": 4,
+      "Nombre": "Pantal\u00F3n",
+      "Descripcion": "Pantal\u00F3n de mezclilla azul cl\u00E1sico",
+      "Precio": 75,
+      "Stock": 25,
+      "ImagenUrl": "https://"
+    },
+    {
+      "Id": 5,
+      "Nombre": "Chaqueta",
+      "Descripcion": "Chaqueta impermeable ligera",
+      "Precio": 120,
+      "Stock": 15,
+      "ImagenUrl": "https://"
     }
   ]
 }
