@@ -32,7 +32,7 @@
   "Productos": [
     {
       "Id": 1,
-      "Nombre": "Zapatillass",
+      "Nombre": "Zapatillas",
       "Descripcion": "Zapatillas deportivas de alta calidad",
       "Precio": 100,
       "Stock": 15,
