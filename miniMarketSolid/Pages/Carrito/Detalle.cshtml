@@ -1,4 +1,4 @@
-﻿@page
+@page
 @model miniMarketSolid.Pages.Carritos.DetalleModel
 @{
     ViewData["Title"] = "Carrito";
@@ -41,6 +41,23 @@ else
                         <form method="post" asp-page-handler="Quitar">
                             <input type="hidden" name="idProducto" value="@it.Producto.Id" />
                             <button class="btn btn-sm btn-outline-danger">Quitar</button>
+            @foreach (var i in Model.Items)
+            {
+                <tr>
+                    <td>@i.Producto.Nombre</td>
+                    <td>Bs. @i.Producto.Precio</td>
+                    <td>
+                        <form method="post" asp-page-handler="Cantidad" class="d-flex gap-2">
+                            <input type="hidden" name="idProducto" value="@i.Producto.Id" />
+                            <input type="number" name="cantidadNueva" value="@i.Cantidad" min="0" class="form-control form-control-sm" />
+                            <button class="btn btn-sm btn-outline-primary" type="submit">Actualizar</button>
+                        </form>
+                    </td>
+                    <td>Bs. @(i.Producto.Precio* i.Cantidad)</td>
+                    <td>
+                        <form method="post" asp-page-handler="Quitar">
+                            <input type="hidden" name="idProducto" value="@i.Producto.Id" />
+                            <button class="btn btn-sm btn-outline-danger" type="submit">Quitar</button>
                         </form>
                     </td>
                 </tr>
