@@ -3,32 +3,33 @@
 @{
     ViewData["Title"] = "Catálogo";
 }
-<h2>Catálogo</h2>
+<h2 class="mb-4">Catálogo</h2>
 
-<div class="row row-cols-1 row-cols-md-3 g-3">
+<div class="row row-cols-1 row-cols-md-3 g-4">
     @foreach (var producto in Model.Productos)
     {
         <div class="col">
-            <div class="card h-100">
-                <div class="bg-light" style="height:220px; display:flex; align-items:center; justify-content:center;">
+            <div class="card h-100 border-0 shadow-soft rounded-4 overflow-hidden">
+                <div class="bg-light" style="height:220px;display:flex;align-items:center;justify-content:center;">
                     <img src="@producto.ImagenUrl"
                          alt="@producto.Nombre"
-                         class="img-fluid"
-                         style="max-width:100%; max-height:100%; object-fit:contain;" />
+                         style="width:100%;height:100%;object-fit:cover;" />
                 </div>
 
-                <div class="card-body">
-                    <h5 class="card-title">@producto.Nombre</h5>
-                    <p class="card-text">Bs. @producto.Precio</p>
-                    <form method="post" asp-page-handler="Agregar">
+                <div class="card-body d-flex flex-column">
+                    <h5 class="card-title mb-1">@producto.Nombre</h5>
+                    <p class="card-text text-muted">Bs. @producto.Precio</p>
+
+                    <form method="post" asp-page-handler="Agregar" class="mt-auto">
                         <input type="hidden" name="idProducto" value="@producto.Id" />
-                        <button type="submit" class="btn btn-primary">Añadir al carrito</button>
+                        <button type="submit" class="btn btn-outline-sky">Añadir al carrito</button>
                     </form>
                 </div>
             </div>
         </div>
     }
 </div>
-<p class="mt-3">
-    <a class="btn btn-outline-secondary" href="/Carrito/Detalle">Ver carrito</a>
+
+<p class="mt-4 mb-5 text-center">
+    <a class="btn btn-nav px-4" href="/Carrito/Detalle">Ver carrito</a>
 </p>
